@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/cjmendez26/hw11/issues"
   },
-  "homepage": "https://github.com/cjmendez26/hw11#readme"
+  "homepage": "https://github.com/cjmendez26/hw11#readme",
+  "dependencies": {
+    "cfonts": "^2.6.1",
+    "inquirer": "^7.0.4",
+    "mysql": "^2.18.1"
+  }
 }
