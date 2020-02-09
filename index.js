@@ -197,7 +197,7 @@ function addEmployee() {
                 name: "manager",
                 type: "list",
                 message: "Who is your employee's manager?",
-                choices: ["Kathy", "Erin", "Paul", "Aubrey", "None"]
+                choices: ["John", "Mike", "Paul", "Carl", "None"]
             }
         ])
         .then(function (answer) {
@@ -228,16 +228,16 @@ function addEmployee() {
             );
 
             var manager_id;
-            if (answer.manager === "Kathy") {
+            if (answer.manager === "John") {
                 manager_id = 1;
             }
-            else if (answer.manager === "Erin") {
+            else if (answer.manager === "Mike") {
                 manager_id = 2;
             }
             else if (answer.manager === "Paul") {
                 manager_id = 3;
             }
-            else if (answer.manager === "Aubrey") {
+            else if (answer.manager === "Carl") {
                 manager_id = 4;
             }
             else if (answer.manager === "None") {
