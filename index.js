@@ -49,9 +49,9 @@ function start() {
             message: "What would you like to do?",
             choices:
                 [
-                    "View All Employees",
-                    "View Employees by Department",
-                    "View Employees by Role",
+                    "View All Employee's",
+                    "View Employee's by Department",
+                    "View Employee's by Role",
                     "Add Employee",
                     "Update Employee's Role",
                     "Quit"
@@ -59,13 +59,13 @@ function start() {
         })
         .then(function (answer) {
             // based on their answer, call the function
-            if (answer.begin === "View All Employees") {
+            if (answer.begin === "View All Employee's") {
                 viewAllEmp();
             }
-            else if (answer.begin === "View Employees by Department") {
+            else if (answer.begin === "View Employee's by Department") {
                 viewEmpDepartment();
             }
-            else if (answer.begin === "View Employees by Role") {
+            else if (answer.begin === "View Employee's by Role") {
                 viewEmpRole();
             }
             else if (answer.begin === "Add Employee") {
@@ -74,9 +74,9 @@ function start() {
             else if (answer.begin === "Update Employee's Role") {
                 updateRole();
             }
-            // else if (answer.begin === "Remove Employee") {
-            //   removeEmp();
-            // }
+            else if (answer.begin === "Remove Employee") {
+              removeEmp();
+            }
             else if (answer.begin === "Quit") {
                 console.log("====Goodbye====");
             }
@@ -86,7 +86,7 @@ function start() {
         });
 }
 
-//View all employees
+//View all employee's
 //========================================
 function viewAllEmp() {
     connection.query("SELECT employee.id, employee.first_name, employee.last_name, employee.manager_id, roles.title, roles.salary, department.department FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON roles.department_id = department.id)", function (err, result) {
@@ -97,14 +97,14 @@ function viewAllEmp() {
     });
 }
 
-//View all employees by department
+//View all employee's by department
 //========================================
 function viewEmpDepartment() {
     inquirer
         .prompt({
             name: "department",
             type: "list",
-            message: "Which department would you like to see employees for?",
+            message: "Which department would you like to see employee's for?",
             choices: ["Sales", "Engineering", "Finance", "Legal"]
         })
         .then(function (answer) {
@@ -119,14 +119,14 @@ function viewEmpDepartment() {
         });
 }
 
-//View all employees by role
+//View all employee's by role
 //========================================
 function viewEmpRole() {
     inquirer
         .prompt({
             name: "role",
             type: "list",
-            message: "Which role would you like to see employees for?",
+            message: "Which role would you like to see employee's for?",
             choices:
                 [
                     "Salesperson",
@@ -245,28 +245,28 @@ function addEmployee() {
             }
 
             var role_id;
-            if (answer.title === "Fundraising Manager") {
+            if (answer.title === "Salesperson") {
                 role_id = 1;
             }
-            else if (answer.title === "Fundraising Assistant") {
+            else if (answer.title === "Sales Lead") {
                 role_id = 2;
             }
-            else if (answer.title === "Development Manager") {
+            else if (answer.title === "Lead Engineer") {
                 role_id = 3;
             }
-            else if (answer.title === "Associate Development Manager") {
+            else if (answer.title === "Software Engineer") {
                 role_id = 4;
             }
-            else if (answer.title === "Lead Advisor") {
+            else if (answer.title === "Finance Lead") {
                 role_id = 5;
             }
-            else if (answer.title === "Associate Advisor") {
+            else if (answer.title === "Accountant") {
                 role_id = 6;
             }
-            else if (answer.title === "Marketing Manager") {
+            else if (answer.title === "Lawyer") {
                 role_id = 7;
             }
-            else if (answer.title === "Associate Marketing Manager") {
+            else if (answer.title === "Legal Team Lead") {
                 role_id = 8;
             }
 
@@ -317,14 +317,14 @@ function updateRole() {
             message: "What is the employee's new role?",
             choices:
                 [
-                    "Fundraising Manager",
-                    "Fundraising Assistant",
-                    "Development Manager",
-                    "Associate Development Manager",
-                    "Lead Advisor",
-                    "Associate Advisor",
-                    "Marketing Manager",
-                    "Associate Marketing Manager"
+                    "Salesperson",
+                    "Sales Lead",
+                    "Lead Engineer",
+                    "Software Engineer",
+                    "Finance Lead",
+                    "Accountant",
+                    "Lawyer",
+                    "Legal Team Lead"
                 ]
         }]
         inquirer
@@ -336,28 +336,28 @@ function updateRole() {
                 let role_id = 0;
                 
 
-                if (answer.newTitle == "Fundraising Manager") {
+                if (answer.newTitle == "Salesperson") {
                     role_id = 1;
                 }
-                else if (answer.newTitle == "Fundraising Assistant") {
+                else if (answer.newTitle == "Sales Lead") {
                     role_id = 2;
                 }
-                else if (answer.newTitle == "Development Manager") {
+                else if (answer.newTitle == "Lead Engineer") {
                     role_id = 3;
                 }
-                else if (answer.newTitle == "Associate Development Manager") {
+                else if (answer.newTitle == "Software Engineer") {
                     role_id = 4;
                 }
-                else if (answer.newTitle == "Lead Advisor") {
+                else if (answer.newTitle == "Finance Lead") {
                     role_id = 5;
                 }
-                else if (answer.newTitle == "Associate Advisor") {
+                else if (answer.newTitle == "Accounting") {
                     role_id = 6;
                 }
-                else if (answer.newTitle == "Marketing Manager") {
+                else if (answer.newTitle == "Lawyer") {
                     role_id = 6;
                 }
-                else if (answer.newTitle == "Associate Marketing Manager") {
+                else if (answer.newTitle == "Legal Team") {
                     role_id = 6;
                 }
 
