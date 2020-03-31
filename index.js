@@ -53,6 +53,7 @@ function start() {
                     "View Employee's by Department",
                     "View Employee's by Role",
                     "Add Employee",
+                    "Add Employee Role",
                     "Update Employee's Role",
                     "Quit"
                 ]
@@ -71,11 +72,14 @@ function start() {
             else if (answer.begin === "Add Employee") {
                 addEmployee();
             }
+            else if (answer.begin === "Add Employee Role") {
+                addEmployeeRole();
+            }
             else if (answer.begin === "Update Employee's Role") {
                 updateRole();
             }
             else if (answer.begin === "Remove Employee") {
-              removeEmp();
+                removeEmp();
             }
             else if (answer.begin === "Quit") {
                 console.log("====Goodbye====");
@@ -150,228 +154,268 @@ function viewEmpRole() {
             }
         });
 }
+// Add new employee role
+//========================================
+function addEmployeeRole() {
+    connection.query("SELECT department.id as value, department.department as name from department", function (err, result) {
+        if (err) throw err;
+        console.log(result);
+        inquirer
+            .prompt([
+                {
+                    name: "role",
+                    type: "input",
+                    message: "What role would you like to add?"
+                },
+                {
+                    name: "salary",
+                    type: "input",
+                    message: "What would be the salary?"
+                },
+                {
+                    name: "dept_id",
+                    type: "list",
+                    message: "What department?",
+                    choices: result
+                }
+            ])
+            .then(function (answer) {
+                connection.query("INSERT INTO roles SET ?",
+                    {
+                        title: answer.role,
+                        salary: answer.salary,
+                        department_id: answer.dept_id
+                    },
+                    function (err, result) {
+                        if (err) throw err;
+                        start();
+                    }
+                );
+            }
+
+            )
+
+    })
+
+
+
+}
 
 //Add new employee
 //========================================
 function addEmployee() {
-    inquirer
-        .prompt([
-            {
-                name: "first",
-                type: "input",
-                message: "What is your employee's first name?"
-            },
-            {
-                name: "last",
-                type: "input",
-                message: "What is your employee's last name?"
-            },
-            {
-                name: "title",
-                type: "list",
-                message: "What is your employee's role?",
-                choices:
-                    [
-                        "Fundraising Manager",
-                        "Fundraising Assistant",
-                        "Development Manager",
-                        "Associate Development Manager",
-                        "Lead Advisor",
-                        "Associate Advisor",
-                        "Marketing Manager",
-                        "Associate Marketing Manager"
-                    ]
-            },
-            {
-                name: "salary",
-                type: "input",
-                message: "What is your employee's salary?"
-            },
-            {
-                name: "dept",
-                type: "list",
-                message: "What is your employee's department?",
-                choices: ["Sales", "Engineering", "Finance", "Legal"]
-            },
-            {
-                name: "manager",
-                type: "list",
-                message: "Who is your employee's manager?",
-                choices: ["John", "Mike", "Paul", "Carl", "None"]
-            }
-        ])
-        .then(function (answer) {
-
-            var dept_id;
-            if (answer.dept === "Sales") {
-                dept_id = 1;
-            }
-            else if (answer.dept === "Engineering") {
-                dept_id = 2;
-            }
-            else if (answer.dept === "Finance") {
-                dept_id = 3;
-            }
-            else if (answer.dept === "Legal") {
-                dept_id = 4;
-            }
-
-            connection.query("INSERT INTO roles SET ?",
-                {
-                    title: answer.title,
-                    salary: answer.salary,
-                    department_id: dept_id
-                },
-                function (err, result) {
-                    if (err) throw err;
-                }
-            );
-
-            var manager_id;
-            if (answer.manager === "John") {
-                manager_id = 1;
-            }
-            else if (answer.manager === "Mike") {
-                manager_id = 2;
-            }
-            else if (answer.manager === "Paul") {
-                manager_id = 3;
-            }
-            else if (answer.manager === "Carl") {
-                manager_id = 4;
-            }
-            else if (answer.manager === "None") {
-                manager_id = null;
-            }
-
-            var role_id;
-            if (answer.title === "Salesperson") {
-                role_id = 1;
-            }
-            else if (answer.title === "Sales Lead") {
-                role_id = 2;
-            }
-            else if (answer.title === "Lead Engineer") {
-                role_id = 3;
-            }
-            else if (answer.title === "Software Engineer") {
-                role_id = 4;
-            }
-            else if (answer.title === "Finance Lead") {
-                role_id = 5;
-            }
-            else if (answer.title === "Accountant") {
-                role_id = 6;
-            }
-            else if (answer.title === "Lawyer") {
-                role_id = 7;
-            }
-            else if (answer.title === "Legal Team Lead") {
-                role_id = 8;
-            }
-
-            connection.query("INSERT INTO employee SET ?",
-                {
-                    first_name: answer.first,
-                    last_name: answer.last,
-                    role_id: role_id,
-                    manager_id: manager_id
-                },
-                function (err, result) {
-                    if (err) throw err;
-
-                    console.log("=== New Employee Added ===");
-                    start();
-                }
-            );
-        });
-}
-
-//Update employee role
-//========================================
-function updateRole() {
-    connection.query("SELECT id, first_name, last_name FROM employee", function (err, result) {
+    connection.query("select roles.title as name, roles.id as value from roles", function (err, result) {
         if (err) throw err;
 
-        var choiceArray = [];
-
-
-        for (var i = 0; i < result.length; i++) {
-            var choices = result[i].id;
-
-            choiceArray.push(choices);
-
-            
-        }
-
-        questions = [
-            {
-            name: "employee",
-            type: "list",
-            message: "Which employee would you like to update?",
-            choices: choiceArray
-        },
-        {
-            name: "newTitle",
-            type: "list",
-            message: "What is the employee's new role?",
-            choices:
-                [
-                    "Salesperson",
-                    "Sales Lead",
-                    "Lead Engineer",
-                    "Software Engineer",
-                    "Finance Lead",
-                    "Accountant",
-                    "Lawyer",
-                    "Legal Team Lead"
-                ]
-        }]
         inquirer
-            .prompt(questions)
+            .prompt([
+                {
+                    name: "first",
+                    type: "input",
+                    message: "What is your employee's first name?"
+                },
+                {
+                    name: "last",
+                    type: "input",
+                    message: "What is your employee's last name?"
+                },
+                {
+                    name: "role_id",
+                    type: "list",
+                    message: "What is your employee's role?",
+                    choices: result
+                    // [
+                    //     "Salesperson",
+                    //     "Sales Lead",
+                    //     "Lead Engineer",
+                    //     "Software Engineer",
+                    //     "Finance Lead",
+                    //     "Accountant",
+                    //     "Lawyer",
+                    //     "Legal Team Lead"
+                    // ]
+                },
+                {
+                    name: "salary",
+                    type: "input",
+                    message: "What is your employee's salary?"
+                },
+                {
+                    name: "dept",
+                    type: "list",
+                    message: "What is your employee's department?",
+                    choices: ["Sales", "Engineering", "Finance", "Legal"]
+                },
+                {
+                    name: "manager",
+                    type: "list",
+                    message: "Who is your employee's manager?",
+                    choices: ["John", "Mike", "Paul", "Carl", "None"]
+                }
+            ])
             .then(function (answer) {
-                console.log(answer.employee);
-                console.log(answer.newTitle)
 
-                let role_id = 0;
-                
-
-                if (answer.newTitle == "Salesperson") {
-                    role_id = 1;
+                var dept_id;
+                if (answer.dept === "Sales") {
+                    dept_id = 1;
                 }
-                else if (answer.newTitle == "Sales Lead") {
-                    role_id = 2;
+                else if (answer.dept === "Engineering") {
+                    dept_id = 2;
                 }
-                else if (answer.newTitle == "Lead Engineer") {
-                    role_id = 3;
+                else if (answer.dept === "Finance") {
+                    dept_id = 3;
                 }
-                else if (answer.newTitle == "Software Engineer") {
-                    role_id = 4;
-                }
-                else if (answer.newTitle == "Finance Lead") {
-                    role_id = 5;
-                }
-                else if (answer.newTitle == "Accounting") {
-                    role_id = 6;
-                }
-                else if (answer.newTitle == "Lawyer") {
-                    role_id = 6;
-                }
-                else if (answer.newTitle == "Legal Team") {
-                    role_id = 6;
+                else if (answer.dept === "Legal") {
+                    dept_id = 4;
                 }
 
 
-                connection.query("UPDATE employee SET role_id = ? WHERE id=?",
-                    [role_id, answer.employee],
+
+                var manager_id;
+                if (answer.manager === "John") {
+                    manager_id = 1;
+                }
+                else if (answer.manager === "Mike") {
+                    manager_id = 2;
+                }
+                else if (answer.manager === "Paul") {
+                    manager_id = 3;
+                }
+                else if (answer.manager === "Carl") {
+                    manager_id = 4;
+                }
+                else if (answer.manager === "None") {
+                    manager_id = null;
+                }
+
+                // var role_id;
+                // if (answer.title === "Salesperson") {
+                //     role_id = 1;
+                // }
+                // else if (answer.title === "Sales Lead") {
+                //     role_id = 2;
+                // }
+                // else if (answer.title === "Lead Engineer") {
+                //     role_id = 3;
+                // }
+                // else if (answer.title === "Software Engineer") {
+                //     role_id = 4;
+                // }
+                // else if (answer.title === "Finance Lead") {
+                //     role_id = 5;
+                // }
+                // else if (answer.title === "Accountant") {
+                //     role_id = 6;
+                // }
+                // else if (answer.title === "Lawyer") {
+                //     role_id = 7;
+                // }
+                // else if (answer.title === "Legal Team Lead") {
+                //     role_id = 8;
+                // }
+
+                connection.query("INSERT INTO employee SET ?",
+                    {
+                        first_name: answer.first,
+                        last_name: answer.last,
+                        role_id: answer.role_id,
+                        manager_id: manager_id
+                    },
                     function (err, result) {
                         if (err) throw err;
 
-                        console.log("=== Updated Employee ===");
+                        console.log("=== New Employee Added ===");
                         start();
                     }
-                )
-
+                );
             });
-    })
-}
+    }
+    )}
+//Update employee role
+//========================================
+function updateRole() {
+            connection.query("SELECT id, first_name, last_name FROM employee", function (err, result) {
+                if (err) throw err;
+
+                var choiceArray = [];
+
+
+                for (var i = 0; i < result.length; i++) {
+                    var choices = result[i].id;
+
+                    choiceArray.push(choices);
+
+
+                }
+
+                questions = [
+                    {
+                        name: "employee",
+                        type: "list",
+                        message: "Which employee would you like to update?",
+                        choices: choiceArray
+                    },
+                    {
+                        name: "newTitle",
+                        type: "list",
+                        message: "What is the employee's new role?",
+                        choices:
+                            [
+                                "Salesperson",
+                                "Sales Lead",
+                                "Lead Engineer",
+                                "Software Engineer",
+                                "Finance Lead",
+                                "Accountant",
+                                "Lawyer",
+                                "Legal Team Lead"
+                            ]
+                    }]
+                inquirer
+                    .prompt(questions)
+                    .then(function (answer) {
+                        console.log(answer.employee);
+                        console.log(answer.newTitle)
+
+                        let role_id = 0;
+
+
+                        if (answer.newTitle == "Salesperson") {
+                            role_id = 1;
+                        }
+                        else if (answer.newTitle == "Sales Lead") {
+                            role_id = 2;
+                        }
+                        else if (answer.newTitle == "Lead Engineer") {
+                            role_id = 3;
+                        }
+                        else if (answer.newTitle == "Software Engineer") {
+                            role_id = 4;
+                        }
+                        else if (answer.newTitle == "Finance Lead") {
+                            role_id = 5;
+                        }
+                        else if (answer.newTitle == "Accounting") {
+                            role_id = 6;
+                        }
+                        else if (answer.newTitle == "Lawyer") {
+                            role_id = 6;
+                        }
+                        else if (answer.newTitle == "Legal Team") {
+                            role_id = 6;
+                        }
+
+
+                        connection.query("UPDATE employee SET role_id = ? WHERE id=?",
+                            [role_id, answer.employee],
+                            function (err, result) {
+                                if (err) throw err;
+
+                                console.log("=== Updated Employee ===");
+                                start();
+                            }
+                        )
+
+                    });
+            })
+        }
