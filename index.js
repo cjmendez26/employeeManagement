@@ -61,7 +61,9 @@ function start() {
                 ]
         })
         .then(function (answer) {
+            //================================================
             // based on their answer, call the function
+            //================================================
             if (answer.begin === "View All Employee's") {
                 viewAllEmp();
             }
@@ -94,6 +96,7 @@ function start() {
             }
         });
 }
+//=======================================
 //View all employee's
 //========================================
 function viewAllEmp() {
