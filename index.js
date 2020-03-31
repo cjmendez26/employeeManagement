@@ -156,9 +156,9 @@ function viewEmpRole() {
                     "Legal Team Lead"
                 ]
         })
-        //================================================
-        // based on answer, call the function
-        //================================================
+//================================================
+// based on answer, call the function
+//================================================
         .then(function (answer) {
             if (answer.role === "Salesperson" || "Sales Lead" || "Lead Engineer" || "Software Engineer" || "Finance Lead" || "Accountant" || "Lawyer" || "Legal Team Lead") {
                 connection.query("SELECT employee.id, employee.first_name, employee.last_name, employee.manager_id, roles.title, roles.salary, department.department FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON roles.department_id = department.id) WHERE title = ?", [answer.role], function (err, result) {
@@ -176,7 +176,6 @@ function viewEmpRole() {
 function addEmployee() {
     connection.query("select roles.title as name, roles.id as value from roles", function (err, result) {
         if (err) throw err;
-
         inquirer
             .prompt([
                 {
@@ -216,6 +215,7 @@ function addEmployee() {
             .then(function (answer) {
 
                 var dept_id;
+
                 if (answer.dept === "Sales") {
                     dept_id = 1;
                 }
@@ -259,8 +259,8 @@ function addEmployee() {
                     }
                 );
             });
-    }
-    )}
+    })
+}
 //========================================
 // Add new employee role
 //========================================
@@ -297,17 +297,11 @@ function addEmployeeRole() {
                     function (err, result) {
                         if (err) throw err;
                         start();
-                    }
-                );
-            }
+                    });
+            })
+        })
+    }
 
-            )
-
-    })
-
-
-
-}
 //================================
 //Update employee role
 //========================================
