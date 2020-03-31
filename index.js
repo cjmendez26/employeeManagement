@@ -129,6 +129,7 @@ function viewEmpDepartment() {
             }
         });
 }
+//========================================
 //View all employee's by role
 //========================================
 function viewEmpRole() {
