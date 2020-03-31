@@ -44,6 +44,9 @@ connection.connect(function (err) {
 //========================================
 function start() {
     inquirer
+//========================================
+//prompt using inquirer first question
+//========================================
         .prompt({
             name: "begin",
             type: "list",
@@ -252,7 +255,7 @@ function addEmployee() {
             });
     }
     )}
-    //========================================
+//========================================
 // Add new employee role
 //========================================
 function addEmployeeRole() {
