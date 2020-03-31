@@ -55,6 +55,7 @@ function start() {
                     "View Employee's by Role",
                     "Add Employee",
                     "Add Employee Role",
+                    "Add Employee Department",
                     "Update Employee's Role",
                     "Quit"
                 ]
@@ -75,6 +76,9 @@ function start() {
             }
             else if (answer.begin === "Add Employee Role") {
                 addEmployeeRole();
+            }
+            else if (answer.begin === "Add Employee Department") {
+                    addEmployeeDepartment();
             }
             else if (answer.begin === "Update Employee's Role") {
                 updateRole();
