@@ -161,6 +161,98 @@ function viewEmpRole() {
             }
         });
 }
+//========================================
+//Add new employee
+//========================================
+function addEmployee() {
+    connection.query("select roles.title as name, roles.id as value from roles", function (err, result) {
+        if (err) throw err;
+
+        inquirer
+            .prompt([
+                {
+                    name: "first",
+                    type: "input",
+                    message: "What is your employee's first name?"
+                },
+                {
+                    name: "last",
+                    type: "input",
+                    message: "What is your employee's last name?"
+                },
+                {
+                    name: "role_id",
+                    type: "list",
+                    message: "What is your employee's role?",
+                    choices: result
+                },
+                {
+                    name: "salary",
+                    type: "input",
+                    message: "What is your employee's salary?"
+                },
+                {
+                    name: "dept",
+                    type: "list",
+                    message: "What is your employee's department?",
+                    choices: ["Sales", "Engineering", "Finance", "Legal"]
+                },
+                {
+                    name: "manager",
+                    type: "list",
+                    message: "Who is your employee's manager?",
+                    choices: ["John", "Mike", "Paul", "Carl", "None"]
+                }
+            ])
+            .then(function (answer) {
+
+                var dept_id;
+                if (answer.dept === "Sales") {
+                    dept_id = 1;
+                }
+                else if (answer.dept === "Engineering") {
+                    dept_id = 2;
+                }
+                else if (answer.dept === "Finance") {
+                    dept_id = 3;
+                }
+                else if (answer.dept === "Legal") {
+                    dept_id = 4;
+                }
+                 var manager_id;
+                if (answer.manager === "John") {
+                    manager_id = 1;
+                }
+                else if (answer.manager === "Mike") {
+                    manager_id = 2;
+                }
+                else if (answer.manager === "Paul") {
+                    manager_id = 3;
+                }
+                else if (answer.manager === "Carl") {
+                    manager_id = 4;
+                }
+                else if (answer.manager === "None") {
+                    manager_id = null;
+                }
+                connection.query("INSERT INTO employee SET ?",
+                    {
+                        first_name: answer.first,
+                        last_name: answer.last,
+                        role_id: answer.role_id,
+                        manager_id: manager_id
+                    },
+                    function (err, result) {
+                        if (err) throw err;
+
+                        console.log("=== New Employee Added ===");
+                        start();
+                    }
+                );
+            });
+    }
+    )}
+    //========================================
 // Add new employee role
 //========================================
 function addEmployeeRole() {
@@ -207,112 +299,7 @@ function addEmployeeRole() {
 
 
 }
-
-//Add new employee
-//========================================
-function addEmployee() {
-    connection.query("select roles.title as name, roles.id as value from roles", function (err, result) {
-        if (err) throw err;
-
-        inquirer
-            .prompt([
-                {
-                    name: "first",
-                    type: "input",
-                    message: "What is your employee's first name?"
-                },
-                {
-                    name: "last",
-                    type: "input",
-                    message: "What is your employee's last name?"
-                },
-                {
-                    name: "role_id",
-                    type: "list",
-                    message: "What is your employee's role?",
-                    choices: result
-                    // [
-                    //     "Salesperson",
-                    //     "Sales Lead",
-                    //     "Lead Engineer",
-                    //     "Software Engineer",
-                    //     "Finance Lead",
-                    //     "Accountant",
-                    //     "Lawyer",
-                    //     "Legal Team Lead"
-                    // ]
-                },
-                {
-                    name: "salary",
-                    type: "input",
-                    message: "What is your employee's salary?"
-                },
-                {
-                    name: "dept",
-                    type: "list",
-                    message: "What is your employee's department?",
-                    choices: ["Sales", "Engineering", "Finance", "Legal"]
-                },
-                {
-                    name: "manager",
-                    type: "list",
-                    message: "Who is your employee's manager?",
-                    choices: ["John", "Mike", "Paul", "Carl", "None"]
-                }
-            ])
-            .then(function (answer) {
-
-                var dept_id;
-                if (answer.dept === "Sales") {
-                    dept_id = 1;
-                }
-                else if (answer.dept === "Engineering") {
-                    dept_id = 2;
-                }
-                else if (answer.dept === "Finance") {
-                    dept_id = 3;
-                }
-                else if (answer.dept === "Legal") {
-                    dept_id = 4;
-                }
-
-
-
-                var manager_id;
-                if (answer.manager === "John") {
-                    manager_id = 1;
-                }
-                else if (answer.manager === "Mike") {
-                    manager_id = 2;
-                }
-                else if (answer.manager === "Paul") {
-                    manager_id = 3;
-                }
-                else if (answer.manager === "Carl") {
-                    manager_id = 4;
-                }
-                else if (answer.manager === "None") {
-                    manager_id = null;
-                }
-
-
-                connection.query("INSERT INTO employee SET ?",
-                    {
-                        first_name: answer.first,
-                        last_name: answer.last,
-                        role_id: answer.role_id,
-                        manager_id: manager_id
-                    },
-                    function (err, result) {
-                        if (err) throw err;
-
-                        console.log("=== New Employee Added ===");
-                        start();
-                    }
-                );
-            });
-    }
-    )}
+//================================
 //Update employee role
 //========================================
 function updateRole() {
