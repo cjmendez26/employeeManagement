@@ -18,7 +18,7 @@ CFonts.say('Employee|Manager!', {
     space: true,
     maxLength: '0',
 });
-
+//========================================
 //Creating database connection
 //========================================
 var connection = mysql.createConnection({
