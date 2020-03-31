@@ -1,10 +1,11 @@
+//========================================
 //Requiring npm packages
 //========================================
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var table = require("console.table");
 var CFonts = require("cfonts");
-
+//========================================
 //Title section
 //========================================
 CFonts.say('Employee|Manager!', {
@@ -89,7 +90,6 @@ function start() {
             }
         });
 }
-
 //View all employee's
 //========================================
 function viewAllEmp() {
@@ -100,7 +100,6 @@ function viewAllEmp() {
         start();
     });
 }
-
 //View all employee's by department
 //========================================
 function viewEmpDepartment() {
@@ -122,7 +121,6 @@ function viewEmpDepartment() {
             }
         });
 }
-
 //View all employee's by role
 //========================================
 function viewEmpRole() {
@@ -288,31 +286,6 @@ function addEmployee() {
                     manager_id = null;
                 }
 
-                // var role_id;
-                // if (answer.title === "Salesperson") {
-                //     role_id = 1;
-                // }
-                // else if (answer.title === "Sales Lead") {
-                //     role_id = 2;
-                // }
-                // else if (answer.title === "Lead Engineer") {
-                //     role_id = 3;
-                // }
-                // else if (answer.title === "Software Engineer") {
-                //     role_id = 4;
-                // }
-                // else if (answer.title === "Finance Lead") {
-                //     role_id = 5;
-                // }
-                // else if (answer.title === "Accountant") {
-                //     role_id = 6;
-                // }
-                // else if (answer.title === "Lawyer") {
-                //     role_id = 7;
-                // }
-                // else if (answer.title === "Legal Team Lead") {
-                //     role_id = 8;
-                // }
 
                 connection.query("INSERT INTO employee SET ?",
                     {
@@ -339,16 +312,11 @@ function updateRole() {
 
                 var choiceArray = [];
 
-
                 for (var i = 0; i < result.length; i++) {
                     var choices = result[i].id;
-
                     choiceArray.push(choices);
-
-
-                }
-
-                questions = [
+                    }
+                    questions = [
                     {
                         name: "employee",
                         type: "list",
