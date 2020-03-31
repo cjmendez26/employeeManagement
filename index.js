@@ -107,6 +107,7 @@ function viewAllEmp() {
         start();
     });
 }
+//========================================
 //View all employee's by department
 //========================================
 function viewEmpDepartment() {
