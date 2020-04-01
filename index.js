@@ -302,7 +302,7 @@ function addEmployeeRole() {
         })
     }
 
-//================================
+//========================================
 //Update employee role
 //========================================
 function updateRole() {
@@ -346,7 +346,6 @@ function updateRole() {
 
                         let role_id = 0;
 
-
                         if (answer.newTitle == "Salesperson") {
                             role_id = 1;
                         }
@@ -372,7 +371,6 @@ function updateRole() {
                             role_id = 6;
                         }
 
-
                         connection.query("UPDATE employee SET role_id = ? WHERE id=?",
                             [role_id, answer.employee],
                             function (err, result) {
@@ -380,9 +378,7 @@ function updateRole() {
 
                                 console.log("=== Updated Employee ===");
                                 start();
-                            }
-                        )
-
+                            })
                     });
             })
         }
