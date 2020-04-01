@@ -304,16 +304,16 @@ function addEmployeeRole() {
 //========================================
 //Add New Employee Department
 //========================================
-function addEmployeeRole() {
-    connection.query("SELECT department.id as value, department.department as name from department", function (err, result) {
+function addEmployeeDepartment() {
+    connection.query("SELECT roles.id as value, roles.department as name from roles", function (err, result) {
         if (err) throw err;
         console.log(result);
         inquirer
             .prompt([
                 {
-                    name: "role",
+                    name: "dept_id",
                     type: "input",
-                    message: "What role would you like to add?"
+                    message: "What Department would you like to add?"
                 },
                 {
                     name: "salary",
@@ -321,18 +321,18 @@ function addEmployeeRole() {
                     message: "What would be the salary?"
                 },
                 {
-                    name: "dept_id",
+                    name: "role",
                     type: "list",
-                    message: "What department?",
+                    message: "What role?",
                     choices: result
                 }
             ])
             .then(function (answer) {
                 connection.query("INSERT INTO roles SET ?",
                     {
-                        title: answer.role,
+                        title: answer.dept_id,
                         salary: answer.salary,
-                        department_id: answer.dept_id
+                        department_id: answer.role
                     },
                     function (err, result) {
                         if (err) throw err;
