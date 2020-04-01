@@ -301,7 +301,46 @@ function addEmployeeRole() {
             })
         })
     }
-
+//========================================
+//Add New Employee Department
+//========================================
+function addEmployeeRole() {
+    connection.query("SELECT department.id as value, department.department as name from department", function (err, result) {
+        if (err) throw err;
+        console.log(result);
+        inquirer
+            .prompt([
+                {
+                    name: "role",
+                    type: "input",
+                    message: "What role would you like to add?"
+                },
+                {
+                    name: "salary",
+                    type: "input",
+                    message: "What would be the salary?"
+                },
+                {
+                    name: "dept_id",
+                    type: "list",
+                    message: "What department?",
+                    choices: result
+                }
+            ])
+            .then(function (answer) {
+                connection.query("INSERT INTO roles SET ?",
+                    {
+                        title: answer.role,
+                        salary: answer.salary,
+                        department_id: answer.dept_id
+                    },
+                    function (err, result) {
+                        if (err) throw err;
+                        start();
+                    });
+            })
+        })
+    }
 //========================================
 //Update employee role
 //========================================
